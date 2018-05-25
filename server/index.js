@@ -1,7 +1,7 @@
 var express = require('express');
 var parser = require('body-parser');
 var db = require('../database-mysql');
-
+let toneAnalyzer = require('../helpers/toneAnalyzer');
 
 var app = express();
 app.use(parser.json());
@@ -21,10 +21,14 @@ app.get('/entry', function (req, res) {
 });
 
 app.post('/entry', function (req, res) {
-  const body = req.body
-  console.log(body);
-  res.set('Content-Type', 'text/plain')
-  res.send(body);
+  const body = req.body;
+  toneAnalyzer(body)
+  .then((analysis) => res.json(tones))
+  .catch((err) => {
+    console.error(err);
+    reject(Error(err));
+  })
+  
 });
 
 
