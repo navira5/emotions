@@ -22,13 +22,29 @@ app.get('/entry', function (req, res) {
 
 app.post('/entry', function (req, res) {
   const body = req.body.entry;
-  console.log(helper);
-  helper.watson(body)
-  .then((analysis) => console.log(analysis))
-  .catch((err) => {
-    console.error(err);
-    reject(Error(err));
-  })
+
+  const cb = function(error, analysis) {
+    if(error) {
+      console.log("error in post request");
+    } else {
+      res.sendStatus(201);
+      
+      var tones = analysis.document_tone.tones;
+      console.log('My TOOOOOOONE ', tones);
+      //functionToSaveToDB(analysis);
+      //res.send(analysis);
+      res.end();
+    }
+    
+  }
+  helper.watson(body, cb)
+  
+  // .then((analysis) => {
+  //   res.sendStatus(201);
+  //   res.end();
+  // }).catch((err) => {
+  //   console.error(err);
+  // })
   
 });
 

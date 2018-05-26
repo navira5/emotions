@@ -23,7 +23,9 @@
     "dotenv": "^5.0.1",
     "express": "^4.15.0",
     "jquery": "^3.1.1",
-    "mysql": "^2.13.0",
+    "mongoose": "^5.1.2",
+    "mongoose-type-url": "^1.0.4",
+    "mysql": "^2.15.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "watson-developer-cloud": "^3.4.2"

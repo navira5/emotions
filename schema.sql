@@ -1,13 +1,18 @@
-DROP DATABASE IF EXISTS test;
+CREATE DATABASE tones;
 
-CREATE DATABASE test;
+USE tones;
 
-USE test;
-
-CREATE TABLE items (
-  id int NOT NULL AUTO_INCREMENT,
-  description varchar(50) NOT NULL,
-  PRIMARY KEY (ID)
+CREATE TABLE tones (
+  id int AUTO_INCREMENT NOT NULL,
+  entry LONGTEXT NOT NULL,
+  anger int NOT NULL,
+  fear int NOT NULL,
+  joy int NOT NULL,
+  sadness int NOT NULL,
+  analytical int NOT NULL,
+  confident int NOT NULL,
+  tentative int NOT NULL,
+  PRIMARY KEY (id)
 );
 
 /*  Execute this file from the command line by typing:
@@ -17,3 +22,5 @@ CREATE TABLE items (
 deadline date NOT NULL,
 
  .*/
+
+

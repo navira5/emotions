@@ -24,9 +24,8 @@ class App extends React.Component {
       url: '/entry',
       data: {entry: entry},
       success: (data) => {
-        this.setState({
-          emotion: data
-        })
+        //set-up get request $.get(path...)
+        //set up helper function that will set the state with the new data
       },
       error: (err) => {
         console.log('error: ', err);
