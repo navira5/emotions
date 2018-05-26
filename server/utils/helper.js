@@ -1,22 +1,22 @@
 const Request = require('request');
-const Config = require('../config.js');
+const Config = require('../../config.js');
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 require('dotenv').config()
 
 console.log('my heeeeeelper');
 
 const watson = (entry) => {
-  console.log('----------------', entry);
+  
   var toneAnalyzer = new ToneAnalyzerV3({
     version: '2017-09-21',
     username: process.env.TONE_ANALYZER_USERNAME,
     password: process.env.TONE_ANALYZER_PASSOWRD,
-    url: 'https://gateway-fra.watsonplatform.net/tone-analyzer/api',
+    url: 'https://gateway.watsonplatform.net/tone-analyzer/api',
   });
-
+  console.log('----------------', toneAnalyzer);
   var toneParams = {
-    'tone_input': { 'text': entry },
-    'content_type': 'application/json'
+    text: entry,
+    content_type: 'text/plain'
   };
 
   toneAnalyzer.tone(toneParams, function (error, analysis) {

@@ -8,7 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      emotion: 'My Emotion Will Display Here',
+      emotion: '',
       inputValue:'',
       all: []
     }
@@ -24,7 +24,9 @@ class App extends React.Component {
       url: '/entry',
       data: {entry: entry},
       success: (data) => {
-        console.log('entry submitted', data)
+        this.setState({
+          emotion: data
+        })
       },
       error: (err) => {
         console.log('error: ', err);

@@ -8,8 +8,6 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../react-client/dist'));
-console.log('WHAT UP HAILEY', helper.watson);
-
 
 app.get('/entry', function (req, res) {
   db.selectAll(function (err, data) {
@@ -22,10 +20,10 @@ app.get('/entry', function (req, res) {
 });
 
 app.post('/entry', function (req, res) {
-  const body = req.body;
+  const body = req.body.entry;
   console.log(helper);
   helper.watson(body)
-  .then((analysis) => res.json(tones))
+  .then((analysis) => console.log(analysis))
   .catch((err) => {
     console.error(err);
     reject(Error(err));
