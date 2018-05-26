@@ -1,13 +1,14 @@
-var express = require('express');
-var parser = require('body-parser');
-var db = require('../database-mysql');
-let toneAnalyzer = require('../helpers/toneAnalyzer');
+const express = require('express');
+const parser = require('body-parser');
+const db = require('../database-mysql');
+const helper = require('./utils/helper.js');
 
 var app = express();
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../react-client/dist'));
+console.log('WHAT UP HAILEY', helper.watson);
 
 
 app.get('/entry', function (req, res) {
@@ -22,7 +23,8 @@ app.get('/entry', function (req, res) {
 
 app.post('/entry', function (req, res) {
   const body = req.body;
-  toneAnalyzer(body)
+  console.log(helper);
+  helper.watson(body)
   .then((analysis) => res.json(tones))
   .catch((err) => {
     console.error(err);
