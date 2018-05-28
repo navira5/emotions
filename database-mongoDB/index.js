@@ -43,15 +43,14 @@ const save = async (username, entry, tone) => {
     .then(user => {
       console.log('user in save', user)
       if (user.length) {
-        console.log('trying to push new entries', user.entries)
-        //user.entries.push({entry, tone}
-        return user[0].update({ username }, {
-          '$push': { 'entries': { entry, tone } }
-        }).exec((err, resp) => {
-          console.log('err', err)
-          console.log('resp', resp)
+        user[0].entries.push({ entry, tone })
+        user[0].save()
+        .then(resp => {
+          res.send(resp)
         })
-        //return user.save()
+        .catch(err => {
+          res.status(500).send(err);
+        })
       } else {
         console.log('trying to create a new entry')
         return Tone.create({ username, entries: [{ entry, tone }] });

@@ -1,6 +1,7 @@
 const express = require('express');
 const parser = require('body-parser');
-const db = require('../database-mysql');
+//const db = require('../database-mysql');
+const db = require('../database-mongoDB');
 const helper = require('./utils/helper.js');
 const PORT = process.env.PORT || 3000;
 
@@ -10,41 +11,44 @@ app.use(parser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-app.get('/entry', function (req, res) {
-  db.selectAll(function (err, data) {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
-  });
-});
-
-app.post('/entry', function (req, res) {
-  const body = req.body.entry;
-
-  const cb = function(error, analysis) {
-    if(error) {
-      console.log("error in post request");
-    } else {
-      res.sendStatus(201);
-      
-      var tones = analysis.document_tone.tones;
-      console.log('My TOOOOOOONE ', tones);
-      //functionToSaveToDB(analysis);
-      //res.send(analysis);
-      res.end();
-    }
-    
+app.get('/items/:user', (req, res) => {
+  console.log('all items', req.params.user)
+  if (!req.params.user) {
+    res.status(400).send('User not specified')
+    res.end()
   }
-  helper.watson(body, cb)
+  db.findByUser(req.params.user)
+    .then(user => {
+      console.log('user found', user)
+      res.send(user)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
+})
+
+console.log('db object', db)
+app.post('/entry', function (req, res) {
+  const { entry:body, user } = req.body;
   
-  // .then((analysis) => {
-  //   res.sendStatus(201);
-  //   res.end();
-  // }).catch((err) => {
-  //   console.error(err);
-  // })
+  const cb = async (error, analysis) => {
+    
+    if(error) {
+      res.status(500).send(error)
+      res.end()
+    }
+
+    try {
+      var tones = analysis.document_tone.tones;
+      const result = await db.save(user, body, tones)
+      res.status(201).send({result, tones});        
+    } catch (error) {
+      res.status(500).send(error)
+    }
+  }
+
+  helper.watson(body, cb)
+
   
 });
 
