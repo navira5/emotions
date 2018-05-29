@@ -10,6 +10,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: true }));
 
 app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(express.static(__dirname + '/../node-js-getting-started/public'));
 
 app.get('/items/:user', (req, res) => {
   console.log('all items', req.params.user)

@@ -83,7 +83,7 @@ class App extends React.Component {
 
   render () {
     const emotions = this.state.emotion.map((emotion, index) => {
-      return (<p key={index}>{emotion.score} {emotion.tone_name} <br/></p>)
+      return (<p key={index}>{Math.floor(100 * emotion.score)} {emotion.tone_name} <br/></p>)
     })
 
     const entries = this.state.entries.map((entry, index) => {
@@ -91,22 +91,39 @@ class App extends React.Component {
         <div key={index}>
           Entry: {entry.entry}
           Tones: {entry.tone.map((emotion, index) => {
-            return (<p key={index}>{emotion.score} {emotion.tone_name} <br /></p>)
+            
+            return (<p key={index}> {emotion.tone_name} {Math.floor(100 * emotion.score)}<br /></p>)
           })}
         </div>
       )
     })
     return (
     <div>
-        <Nav onUserSelected={this.onUserSelected.bind(this)} options={this.state.options}/>
-        <div>
-          <input type='text'  value={this.state.user} onChange={this.userChangedHandler.bind(this)} />
+        <h2>EMOTIONS DIARY</h2>
+        <input
+          className="name_input"
+          type='text'
+          placeholder='Enter your name' value={this.state.user} onChange={this.userChangedHandler.bind(this)} />
+        
+        <div className="ta-center">
+          <textarea
+            className="text_box"
+            name="message"
+            rows="20"
+            cols="50"
+            placeholder='How was your day?'
+            value={this.state.inputValue}
+            onChange={this.changeHandler.bind(this)} />
+          <button className="submit_button" onClick={this.submitEntry}>Submit</button>
+          <h4>Emotion Analysis {emotions}</h4>
         </div>
-        <textarea name="message" rows="10" cols="30" placeholder='How was your day?' value={this.state.inputValue} onChange={this.changeHandler.bind(this)}/>
-        <button onClick={this.submitEntry}>Submit</button>
-        <h4>Your Emotion Analysis: {emotions}</h4>
-
+        <div className="header_name">
+          <Nav onUserSelected={this.onUserSelected.bind(this)} options={this.state.options} />
+        </div>
+      <div className="entries">
         {entries}
+      </div>
+
     </div>)
   }
 }
